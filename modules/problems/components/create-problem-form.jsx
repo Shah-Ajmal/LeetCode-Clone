@@ -1,5 +1,4 @@
 "use client";
-
 import { Editor } from "@monaco-editor/react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +13,7 @@ import {
   CheckCircle2,
   Download,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react"; //
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -29,7 +28,6 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -78,7 +76,7 @@ const problemSchema = z.object({
   }),
 });
 
-// Sample problem data for pre-filling the form
+// ===================== SAMPLE DATA =====================
 const sampledpData = {
   title: "Climbing Stairs",
   description:
@@ -91,18 +89,9 @@ const sampledpData = {
   editorial:
     "This is a classic dynamic programming problem. The number of ways to reach the nth step is the sum of the number of ways to reach the (n-1)th step and the (n-2)th step, forming a Fibonacci-like sequence.",
   testCases: [
-    {
-      input: "2",
-      output: "2",
-    },
-    {
-      input: "3",
-      output: "3",
-    },
-    {
-      input: "4",
-      output: "5",
-    },
+    { input: "2", output: "2" },
+    { input: "3", output: "3" },
+    { input: "4", output: "5" },
   ],
   examples: {
     JAVASCRIPT: {
@@ -133,7 +122,6 @@ function climbStairs(n) {
 // Write your code here
 }
 
-// Parse input and execute
 const readline = require('readline');
 const rl = readline.createInterface({
 input: process.stdin,
@@ -144,7 +132,6 @@ terminal: false
 rl.on('line', (line) => {
 const n = parseInt(line.trim());
 const result = climbStairs(n);
-
 console.log(result);
 rl.close();
 });`,
@@ -153,18 +140,11 @@ rl.close();
       # Write your code here
       pass
 
-# Input parsing
 if __name__ == "__main__":
   import sys
-  
-  # Parse input
   n = int(sys.stdin.readline().strip())
-  
-  # Solve
   sol = Solution()
   result = sol.climbStairs(n)
-  
-  # Print result
   print(result)`,
     JAVA: `import java.util.Scanner;
 
@@ -177,92 +157,48 @@ class Main {
   public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
       int n = Integer.parseInt(scanner.nextLine().trim());
-      
-      // Use Main class instead of Solution
       Main main = new Main();
       int result = main.climbStairs(n);
-      
       System.out.println(result);
       scanner.close();
   }
 }`,
   },
   referenceSolutions: {
-    JAVASCRIPT: `/**
-* @param {number} n
-* @return {number}
-*/
-function climbStairs(n) {
-// Base cases
-if (n <= 2) {
-  return n;
-}
-
-// Dynamic programming approach
+    JAVASCRIPT: `function climbStairs(n) {
+if (n <= 2) return n;
 let dp = new Array(n + 1);
 dp[1] = 1;
 dp[2] = 2;
-
 for (let i = 3; i <= n; i++) {
   dp[i] = dp[i - 1] + dp[i - 2];
 }
-
 return dp[n];
-}
-
-const readline = require('readline');
-const rl = readline.createInterface({
-input: process.stdin,
-output: process.stdout,
-terminal: false
-});
-
-rl.on('line', (line) => {
-const n = parseInt(line.trim());
-const result = climbStairs(n);
-console.log(result);
-rl.close();
-});
-`,
+}`,
     PYTHON: `class Solution:
-    def climbStairs(self, n: int) -> int:
-        if n <= 2:
-            return n
-        dp = [0] * (n + 1)
-        dp[1] = 1
-        dp[2] = 2
-        for i in range(3, n + 1):
-            dp[i] = dp[i - 1] + dp[i - 2]
-        return dp[n]
-
-if __name__ == "__main__":
-    import sys
-    n = int(sys.stdin.readline().strip())
-    sol = Solution()
-    result = sol.climbStairs(n)
-    print(result)
-`,
-
+  def climbStairs(self, n: int) -> int:
+      if n <= 2:
+          return n
+      dp = [0] * (n + 1)
+      dp[1] = 1
+      dp[2] = 2
+      for i in range(3, n + 1):
+          dp[i] = dp[i - 1] + dp[i - 2]
+      return dp[n]`,
     JAVA: `import java.util.Scanner;
 
 class Main {
   public int climbStairs(int n) {
-      if (n <= 2) {
-          return n;
-      }
-      
+      if (n <= 2) return n;
       int[] dp = new int[n + 1];
       dp[1] = 1;
       dp[2] = 2;
-      
       for (int i = 3; i <= n; i++) {
           dp[i] = dp[i - 1] + dp[i - 2];
       }
-      
       return dp[n];
   }
 
-  
   public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
       int n = Integer.parseInt(scanner.nextLine().trim());
@@ -275,7 +211,6 @@ class Main {
   },
 };
 
-// Sample problem data for another type of question
 const sampleStringProblem = {
   title: "Valid Palindrome",
   description:
@@ -287,20 +222,11 @@ const sampleStringProblem = {
   hints:
     "Consider using two pointers, one from the start and one from the end, moving towards the center.",
   editorial:
-    "We can use two pointers approach to check if the string is a palindrome. One pointer starts from the beginning and the other from the end, moving towards each other.",
+    "We can use two pointers approach to check if the string is a palindrome.",
   testCases: [
-    {
-      input: "A man, a plan, a canal: Panama",
-      output: "true",
-    },
-    {
-      input: "race a car",
-      output: "false",
-    },
-    {
-      input: " ",
-      output: "true",
-    },
+    { input: "A man, a plan, a canal: Panama", output: "true" },
+    { input: "race a car", output: "false" },
+    { input: " ", output: "true" },
   ],
   examples: {
     JAVASCRIPT: {
@@ -320,115 +246,21 @@ const sampleStringProblem = {
     },
   },
   codeSnippets: {
-    JAVASCRIPT: `/**
-   * @param {string} s
-   * @return {boolean}
-   */
-  function isPalindrome(s) {
-    // Write your code here
-  }
-  
-  // Add readline for dynamic input handling
-  const readline = require('readline');
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    terminal: false
-  });
-  
-  // Process input line
-  rl.on('line', (line) => {
-    // Call solution with the input string
-    const result = isPalindrome(line);
-    
-    // Output the result
-    console.log(result ? "true" : "false");
-    rl.close();
-  });`,
-    PYTHON: `class Solution:
-      def isPalindrome(self, s: str) -> bool:
-          # Write your code here
-          pass
-  
-  # Input parsing
-  if __name__ == "__main__":
-      import sys
-      # Read the input string
-      s = sys.stdin.readline().strip()
-      
-      # Call solution
-      sol = Solution()
-      result = sol.isPalindrome(s)
-      
-      # Output result
-      print(str(result).lower())  # Convert True/False to lowercase true/false`,
-    JAVA: `import java.util.Scanner;
-
-public class Main {
-    public static String preprocess(String s) {
-        return s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-    }
-
-    public static boolean isPalindrome(String s) {
-       
-    }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String input = sc.nextLine();
-
-        boolean result = isPalindrome(input);
-        System.out.println(result ? "true" : "false");
-    }
+    JAVASCRIPT: `function isPalindrome(s) {
+  // Write your code here
 }
-`,
-  },
-  referenceSolutions: {
-    JAVASCRIPT: `/**
-   * @param {string} s
-   * @return {boolean}
-   */
-  function isPalindrome(s) {
-    // Convert to lowercase and remove non-alphanumeric characters
-    s = s.toLowerCase().replace(/[^a-z0-9]/g, '');
-    
-    // Check if it's a palindrome
-    let left = 0;
-    let right = s.length - 1;
-    
-    while (left < right) {
-      if (s[left] !== s[right]) {
-        return false;
-      }
-      left++;
-      right--;
-    }
-    
-    return true;
-  }
-  
-  // Add readline for dynamic input handling
-  const readline = require('readline');
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    terminal: false
-  });
-  
-  // Process input line
-  rl.on('line', (line) => {
-    // Call solution with the input string
-    const result = isPalindrome(line);
-    
-    // Output the result
-    console.log(result ? "true" : "false");
-    rl.close();
-  });`,
 
+const readline = require('readline');
+const rl = readline.createInterface({ input: process.stdin, terminal: false });
+rl.on('line', (line) => {
+  const result = isPalindrome(line);
+  console.log(result ? "true" : "false");
+  rl.close();
+});`,
     PYTHON: `class Solution:
     def isPalindrome(self, s: str) -> bool:
-        filtered_chars = [c.lower() for c in s if c.isalnum()]
-        return filtered_chars == filtered_chars[::-1]
+        # Write your code here
+        pass
 
 if __name__ == "__main__":
     import sys
@@ -439,37 +271,72 @@ if __name__ == "__main__":
     JAVA: `import java.util.Scanner;
 
 public class Main {
-    public static String preprocess(String s) {
-        return s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+    public static boolean isPalindrome(String s) {
+        // Write your code here
+        return false;
     }
 
-    public static boolean isPalindrome(String s) {
-        s = preprocess(s);
-        int left = 0, right = s.length() - 1;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine();
+        boolean result = isPalindrome(input);
+        System.out.println(result ? "true" : "false");
+    }
+}`,
+  },
+  referenceSolutions: {
+    JAVASCRIPT: `function isPalindrome(s) {
+  s = s.toLowerCase().replace(/[^a-z0-9]/g, '');
+  let left = 0, right = s.length - 1;
+  while (left < right) {
+    if (s[left] !== s[right]) return false;
+    left++;
+    right--;
+  }
+  return true;
+}
 
+const readline = require('readline');
+const rl = readline.createInterface({ input: process.stdin, terminal: false });
+rl.on('line', (line) => {
+  console.log(isPalindrome(line) ? "true" : "false");
+  rl.close();
+});`,
+    PYTHON: `class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        filtered_chars = [c.lower() for c in s if c.isalnum()]
+        return filtered_chars == filtered_chars[::-1]
+
+if __name__ == "__main__":
+    import sys
+    s = sys.stdin.readline().strip()
+    sol = Solution()
+    print(str(sol.isPalindrome(s)).lower())`,
+    JAVA: `import java.util.Scanner;
+
+public class Main {
+    public static boolean isPalindrome(String s) {
+        s = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        int left = 0, right = s.length() - 1;
         while (left < right) {
             if (s.charAt(left) != s.charAt(right)) return false;
             left++;
             right--;
         }
-
         return true;
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
-
-        boolean result = isPalindrome(input);
-        System.out.println(result ? "true" : "false");
+        System.out.println(isPalindrome(input) ? "true" : "false");
     }
-}
-`,
+}`,
   },
 };
 
+// ===================== CODE EDITOR  =====================
 const CodeEditor = ({ value, onChange, language = "javascript" }) => {
-  // Map language names to Monaco Editor language IDs
   const languageMap = {
     javascript: "javascript",
     python: "python",
@@ -504,10 +371,15 @@ const CodeEditor = ({ value, onChange, language = "javascript" }) => {
   );
 };
 
-const CreateProblemForm = () => {
+// ===================== MAIN FORM =====================
+// ✅ added problemToEdit prop
+const CreateProblemForm = ({ problemToEdit = null }) => {
   const router = useRouter();
   const [sampleType, setSampleType] = useState("DP");
   const [isLoading, setIsLoading] = useState(false);
+
+  // ✅ isEditMode is true when pencil button was clicked
+  const isEditMode = !!problemToEdit;
 
   const form = useForm({
     resolver: zodResolver(problemSchema),
@@ -537,7 +409,6 @@ const CreateProblemForm = () => {
     control,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors },
   } = form;
 
@@ -561,27 +432,47 @@ const CreateProblemForm = () => {
     name: "tags",
   });
 
+  // ✅ Pre-fills the form when editing an existing problem
+  useEffect(() => {
+    if (problemToEdit) {
+      replaceTags(problemToEdit.tags.map((tag) => tag));
+      replaceTestCases(problemToEdit.testCases.map((tc) => tc));
+      reset(problemToEdit);
+    }
+  }, [problemToEdit]);
+
+  // ✅ Handles both create (POST) and edit (PUT)
   const onSubmit = async (values) => {
     try {
       setIsLoading(true);
-      console.log("Form values:", values);
-      // Add your API call here
-      const response = await fetch("/api/create-problem", {
-        method: "POST",
+
+      const url = isEditMode
+        ? `/api/problems/${problemToEdit.id}`
+        : "/api/create-problem";
+
+      const method = isEditMode ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
+
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to create problem ");
+        throw new Error(data.error || "Failed to save problem");
       }
-      console.log("API response:", response);
-      toast.success(response.message || "Problem created successfully");
+
+      toast.success(
+        isEditMode
+          ? "Problem updated successfully"
+          : "Problem created successfully",
+      );
       router.push("/problems");
     } catch (error) {
-      console.error("Error creating problem:", error);
-      toast.error(error.message || "Failed to create problem");
+      console.error("Error saving problem:", error);
+      toast.error(error.message || "Failed to save problem");
     } finally {
       setIsLoading(false);
     }
@@ -599,9 +490,10 @@ const CreateProblemForm = () => {
       <Card className="shadow-xl">
         <CardHeader className="pb-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            {/* ✅ Title changes based on mode */}
             <CardTitle className="text-3xl flex items-center gap-3">
               <FileText className="w-8 h-8 text-amber-600" />
-              Create Problem
+              {isEditMode ? "Edit Problem" : "Create Problem"}
             </CardTitle>
 
             <div className="flex flex-col md:flex-row gap-3">
@@ -642,7 +534,6 @@ const CreateProblemForm = () => {
 
         <CardContent className="p-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            {/* Basic Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
                 <Label htmlFor="title" className="text-lg font-semibold">
@@ -730,7 +621,7 @@ const CreateProblemForm = () => {
               </div>
             </div>
 
-            {/* Tags */}
+            {/* Tags - unchanged */}
             <Card className="bg-amber-50 dark:bg-amber-950/20">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
@@ -778,7 +669,7 @@ const CreateProblemForm = () => {
               </CardContent>
             </Card>
 
-            {/* Test Cases */}
+            {/* Test Cases  */}
             <Card className="bg-green-50 dark:bg-green-950/20">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
@@ -866,7 +757,6 @@ const CreateProblemForm = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Starter Code */}
                   <Card>
                     <CardHeader>
                       <CardTitle className="text-lg">
@@ -893,7 +783,6 @@ const CreateProblemForm = () => {
                     </CardContent>
                   </Card>
 
-                  {/* Reference Solution */}
                   <Card>
                     <CardHeader>
                       <CardTitle className="text-lg flex items-center gap-2">
@@ -921,7 +810,6 @@ const CreateProblemForm = () => {
                     </CardContent>
                   </Card>
 
-                  {/* Examples */}
                   <Card>
                     <CardHeader>
                       <CardTitle className="text-lg">Example</CardTitle>
@@ -1010,7 +898,6 @@ const CreateProblemForm = () => {
               </CardContent>
             </Card>
 
-            {/* Submit Button */}
             <div className="flex justify-end mt-6">
               <Button
                 type="submit"
@@ -1021,12 +908,12 @@ const CreateProblemForm = () => {
                 {isLoading ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Creating...
+                    {isEditMode ? "Updating..." : "Creating..."}
                   </>
                 ) : (
                   <>
                     <Plus className="w-5 h-5" />
-                    Create Problem
+                    {isEditMode ? "Update Problem" : "Create Problem"}
                   </>
                 )}
               </Button>

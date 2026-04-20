@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import {
@@ -41,6 +41,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 
 const ProblemsTable = ({ problems, user }) => {
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [difficulty, setDifficulty] = useState("ALL");
   const [selectedTag, setSelectedTag] = useState("ALL");
@@ -305,7 +306,15 @@ const ProblemsTable = ({ problems, user }) => {
                               >
                                 <TrashIcon className="h-4 w-4" />
                               </Button>
-                              <Button variant="outline" size="sm" disabled>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() =>
+                                  router.push(
+                                    `/create-problem?editId=${problem.id}`,
+                                  )
+                                }
+                              >
                                 <PencilIcon className="h-4 w-4" />
                               </Button>
                             </>
